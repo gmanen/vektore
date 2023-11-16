@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    openai.api_key: '%env(OPENAI_API_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -37,3 +38,10 @@ services:
     App\Controller\PostDocumentAction:
         arguments:
             $projectDir: '%kernel.project_dir%'
+
+    OpenAI\Factory:
+        calls:
+            - withApiKey: '%openai.api_key%'
+
+    OpenAI\Client:
+        factory: ['OpenAI\Factory', 'withApiKey']
