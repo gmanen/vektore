@@ -4,3 +4,9 @@ services:
   redis:
     ports:
       - "${REDIS_PORT:-}:6379"
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432"
+###< doctrine/doctrine-bundle ###
