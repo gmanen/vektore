@@ -33,3 +33,7 @@ services:
         arguments:
             $redisClient: '@snc_redis.default'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
+
+    App\Controller\PostDocumentAction:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
