@@ -14,47 +14,20 @@
               density="compact"
           >
             <VTimelineItem
-                dot-color="success"
                 size="x-small"
+                dot-color="info"
             >
-              <!-- 👉 Header -->
               <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
                 <span class="app-timeline-title">
-                  Get on the flight
+                  John Doe
                 </span>
-                <span class="app-timeline-meta">Wednesday</span>
+                <span class="app-timeline-meta">20/09/2023</span>
               </div>
 
-              <!-- 👉 Content -->
-              <p class="app-timeline-text mb-1">
-                <span>Charles de Gaulle Airport, Paris</span>
-                <VIcon
-                    size="20"
-                    icon="mdi-arrow-right"
-                    class="mx-2"
-                />
-                <span>Heathrow Airport, London</span>
-              </p>
-            </VTimelineItem>
+              <p></p>
 
-            <VTimelineItem
-                size="x-small"
-                dot-color="success"
-            >
-              <!-- 👉 Header -->
-              <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
-                <span class="app-timeline-title">
-                  Design Review
-                </span>
-                <span class="app-timeline-meta">September, 20</span>
-              </div>
-
-              <!-- 👉 Content -->
-              <p>
-                Weekly review of freshly prepared design for our new application.
-              </p>
               <div class="d-flex align-center">
-
+                Donne moi l'url de l'env de recette du projet eCoffre
               </div>
             </VTimelineItem>
 
@@ -62,20 +35,53 @@
                 size="x-small"
                 dot-color="success"
             >
-              <!-- 👉 Header -->
               <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
                 <span class="app-timeline-title">
-                  Design Review
+                  FiduSens
                 </span>
-                <span class="app-timeline-meta">September, 20</span>
+                <span class="app-timeline-meta">20/09/2023</span>
               </div>
 
-              <!-- 👉 Content -->
-              <p>
-                Weekly review of freshly prepared design for our new application.
-              </p>
-              <div class="d-flex align-center">
+              <p></p>
 
+              <div class="d-flex align-center">
+                Biensur, la voici : https://recette.ecoffre.com
+              </div>
+            </VTimelineItem>
+
+            <VTimelineItem
+                size="x-small"
+                dot-color="info"
+            >
+              <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
+                <span class="app-timeline-title">
+                  John Doe
+                </span>
+                <span class="app-timeline-meta">20/09/2023</span>
+              </div>
+
+              <p></p>
+
+              <div class="d-flex align-center">
+                Aupres de qui puis-je demander une des informations lié au projet HAB/AUT ?
+              </div>
+            </VTimelineItem>
+
+            <VTimelineItem
+                size="x-small"
+                dot-color="success"
+            >
+              <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
+                <span class="app-timeline-title">
+                  FiduSens
+                </span>
+                <span class="app-timeline-meta">20/09/2023</span>
+              </div>
+
+              <p></p>
+
+              <div class="d-flex align-center">
+                Vous pouvez vous rapprocher du chef de projet : XXX YYY ou du responsable technique : XXX YYY
               </div>
             </VTimelineItem>
           </VTimeline>
