@@ -33,4 +33,4 @@ services:
             - withApiKey: ['%openai.api_key%']
 
     OpenAI\Client:
-        factory: ['OpenAI\Factory', 'make']
+        factory: ['@OpenAI\Factory', 'make']

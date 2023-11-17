@@ -6,22 +6,22 @@ use App\Message\DocumentCreated;
 use App\OpenAI\Embedding;
 use App\Repository\DocumentRepository;
 use App\VectoreStore\RedisStore;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class DocumentEmbedding
 {
     public function __construct(
         private readonly DocumentRepository $repository,
         private readonly RedisStore $redisStore,
         private readonly Embedding $embedding,
-        private readonly NormalizerInterface $normalizer,
     ) {
     }
 
     /**
      * @throws \JsonException
      */
-    public function __invoke(DocumentCreated $message)
+    public function __invoke(DocumentCreated $message): void
     {
         $document = $this->repository->find($message->id);
         $content = file_get_contents($document->getPath());
