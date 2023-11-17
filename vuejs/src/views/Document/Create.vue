@@ -1,10 +1,13 @@
 <template>
   <VCard title="Création d'un document">
     <VCardText>
-      Un document peut-être un fichier ou une URL.
+      Un document peut se présenter sous la forme d'un fichier stocké localement ou d'une URL pointant vers une ressource en ligne.
     </VCardText>
 
+    <div></div>
+
     <VCardText>
+      <h4>Infos document</h4>
       <VCol cols="12">
         <VTextField
             v-model="title"
@@ -14,13 +17,20 @@
         />
       </VCol>
 
+      <br>
+
+      <h4>Source en provenance d'un document</h4>
       <VCol cols="12">
         <VFileInput
             v-model="file"
             show-size
-            label="File input"
+            label="Fichier"
         />
       </VCol>
+
+      <br>
+
+      <h4>Source en provenance d'un lien</h4>
 
       <VCol cols="12">
         <VTextField
@@ -40,6 +50,8 @@
         />
       </VCol>
 
+      <br>
+
       <VCol cols="12">
         <VBtn color="primary" @click="postDocument()">Valider</VBtn>
       </VCol>
@@ -50,6 +62,7 @@
 <script setup>
 import {useStore} from 'vuex';
 import axios from "axios";
+import config from "@/config";
 
 const store = useStore();
 const router = useRouter()
@@ -67,28 +80,25 @@ const postDocument = async () => {
   if (file.value && file.value[0] && file.value[0] instanceof File) {
     data.filename = file.value[0].name
     data.content = await toBase64(file.value[0])
-    data.type = 'FILE'
+    data.content = data.content.split(',')[1]
+    data.type = 'file'
   } else {
     data.url = url.value
     data.cssSelector = cssSelector.value
-    data.type = 'URL'
+    data.type = 'url'
   }
 
-  console.log(data)
-
-  /*
   axios
       .post(config.apiUrl + '/documents', data, {
       })
       .then(response => {
-        if (response.status === 200) {
-          router.push({ name: 'AdminDocumentList' })
+        if (response.status === 201) {
+          router.push({ name: 'DocumentList' })
         }
       })
       .catch(error => {
         console.log(error)
       })
-    */
 }
 
 const toBase64 = (file) => new Promise((resolve, reject) => {

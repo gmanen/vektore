@@ -1,4 +1,4 @@
 export default {
   title: 'FiduSens',
-  apiUrl: 'http://vektor.com/api',
+  apiUrl: 'http://vektore.com/api',
 }

@@ -27,14 +27,22 @@
 
       <tbody>
       <tr
-          v-for="item in nases"
+          v-for="item in documents"
           :key="item.nas"
       >
+        <td>
+          {{ item.id }}
+        </td>
         <td>
           {{ item.title }}
         </td>
         <td>
           {{ item.type }}
+        </td>
+      </tr>
+      <tr v-if="documents.length == 0">
+        <td>
+          Il n'y a aucun document
         </td>
       </tr>
       </tbody>
