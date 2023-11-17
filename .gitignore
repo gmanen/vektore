@@ -9,3 +9,6 @@
 /vendor/
 /vuejs/node_modules/
 ###< symfony/framework-bundle ###
+
+/.docker/database/data/*
+/.docker/redis/data/*

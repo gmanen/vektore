@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Document;
 use App\Exception\ValidationException;
+use App\Message\DocumentCreated;
 use App\Model\PostDocument;
 use App\Repository\DocumentRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ class PostDocumentAction
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly DocumentRepository $repository,
+        private readonly MessageBusInterface $messageBus,
         private readonly string $projectDir,
     ) {
     }
@@ -49,6 +51,8 @@ class PostDocumentAction
         }
 
         $this->repository->persistAndFlush($document);
+
+        $this->messageBus->dispatch(new DocumentCreated($document->getId()));
 
         return new Response($this->serializer->serialize($postDocument, 'json'), Response::HTTP_CREATED);
     }
