@@ -53,6 +53,6 @@ class PostQuestionAction
 
         $answer = $this->chat->sendQuestion($question->content, $documents);
 
-        return new JsonResponse(['answer' => $answer->choices[0]->message->content ?? '']);
+        return new JsonResponse(['answer' => $answer]);
     }
 }
