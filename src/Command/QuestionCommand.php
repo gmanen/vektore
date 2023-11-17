@@ -13,12 +13,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(name: 'app:question')]
 class QuestionCommand extends Command
 {
     public function __construct(
+        #[Autowire('@snc_redis.default')]
         private readonly Client $redisClient,
+        #[Autowire('%openai.api_key%')]
         private readonly string $openAIApiKey,
     ) {
         parent::__construct();
