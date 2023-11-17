@@ -12,9 +12,6 @@ class Chat
     ) {
     }
 
-    /**
-     * @return float[]
-     */
     public function sendQuestion(string $input, array $embeddings): string
     {
         $context = '';
