@@ -15,7 +15,7 @@ class Chat
     /**
      * @return float[]
      */
-    public function sendQuestion(string $input, array $embeddings): array
+    public function sendQuestion(string $input, array $embeddings): string
     {
         $context = '';
 
@@ -47,6 +47,6 @@ MSG
             ],
         ]);
 
-        return $response->embeddings[0]->embedding;
+        return $response->choices[0]->message->content ?? '';
     }
 }
