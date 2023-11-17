@@ -28,22 +28,25 @@ class DocumentEmbedding
         $chunks = [];
         $currentChunk = '';
 
-        foreach (explode("\n", $content) as $lines) {
-            foreach (explode('.', $lines) as $phrase) {
-                if ($currentChunk === '') {
-                    $currentChunk = $phrase;
-                    continue;
-                }
+        foreach (explode("\n", $content) as $line) {
+            if ($currentChunk === '') {
+                $currentChunk = $line;
 
-                if ($currentChunk . $phrase >= 1000) {
-                    $chunks[] = $currentChunk;
-                    $currentChunk = '';
+                continue;
+            }
 
-                    continue;
-                }
+            if (strlen($currentChunk.$line) >= 1000) {
+                $chunks[] = $currentChunk;
+                $currentChunk = $line;
 
-                $currentChunk .= $phrase;
-            };
+                continue;
+            }
+
+            $currentChunk .= $line;
+        }
+
+        if (!empty($currentChunk)) {
+            $chunks[] = $currentChunk;
         }
 
         $chunkIndex = 0;
