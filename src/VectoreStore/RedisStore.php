@@ -10,10 +10,12 @@ use Predis\Command\Argument\Search\SchemaFields\TextField;
 use Predis\Command\Argument\Search\SchemaFields\VectorField;
 use Predis\Command\Argument\Search\SearchArguments;
 use Predis\Response\ServerException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class RedisStore
 {
     public function __construct(
+        #[Autowire('@snc_redis.default')]
         private readonly Client $client,
         private readonly string $redisIndex = 'vectorstore',
         private readonly int $documentsPerQuery = 4,

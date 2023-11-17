@@ -13,13 +13,17 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(name: 'app:embeddings:create')]
 class CreateEmbeddingsCommand extends Command
 {
     public function __construct(
+        #[Autowire('@snc_redis.default')]
         private readonly Client $redisClient,
+        #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
+        #[Autowire('%openai.api_key%')]
         private readonly string $openAIApiKey,
     ) {
         parent::__construct();

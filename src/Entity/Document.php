@@ -24,7 +24,7 @@ class Document
     #[ORM\Column(type: 'string')]
     private string $path;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $selector;
 
     public function getId(): ?Uuid
