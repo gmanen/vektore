@@ -60,11 +60,9 @@
 </template>
 
 <script setup>
-import {useStore} from 'vuex';
 import axios from "axios";
 import config from "@/config";
 
-const store = useStore();
 const router = useRouter()
 const title = ref('')
 const file = ref('')

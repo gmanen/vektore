@@ -28,7 +28,7 @@
       <tbody>
       <tr
           v-for="item in documents"
-          :key="item.nas"
+          :key="item.document"
       >
         <td>
           {{ item.id }}
