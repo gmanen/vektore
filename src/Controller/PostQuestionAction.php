@@ -55,12 +55,16 @@ class PostQuestionAction
 
         $stream = $this->chat->sendQuestion($question->content, $documents, true);
 
-        return new StreamedResponse(function () use ($stream) {
+        $response = new StreamedResponse(function () use ($stream) {
             /** @var CreateStreamedResponse $response */
             foreach ($stream as $response) {
-                echo $response->choices[0]->message->content ?? '';
+                echo $response->choices[0]->delta->content ?? '';
                 flush();
             }
         });
+
+        $response->send();
+
+        return $response;
     }
 }

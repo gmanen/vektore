@@ -95,6 +95,7 @@ import config from "@/config";
 const loadings = ref([])
 const qaItems = ref([])
 const content = ref('')
+const partialAnswer = ref('')
 
 const postQuestion = async () => {
   loadings.value[0] = true
@@ -107,11 +108,15 @@ const postQuestion = async () => {
       .post(config.apiUrl + '/question', data, {
       })
       .then(response => {
+        console.log(response)
+
+        /*
         if (response.status === 200) {
           qaItems.value.push({ question : content.value, answer : response.data.answer })
         }
 
         content.value = ''
+         */
 
         loadings.value[0] = false
       })
@@ -120,6 +125,39 @@ const postQuestion = async () => {
 
         loadings.value[0] = false
       })
+  /*
+  axios.post(config.apiUrl + '/question', data, {
+    onDownloadProgress: (progressEvent) => {
+      const text = progressEvent.currentTarget.responseText;
+
+      console.log(text)
+
+      const lastChunk = text.slice(text.lastIndexOf('{'));
+
+      console.log(lastChunk)
+
+      try {
+        const data = JSON.parse(lastChunk);
+
+        this.partialAnswer = data.content;
+
+        if (data.finished) {
+          qaItems.value.push({ question: content.value, answer: this.partialAnswer });
+
+          content.value = '';
+
+          loadings.value[0] = false;
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+  })
+  .catch(error => {
+    console.log(error);
+    loadings.value[0] = false;
+  });
+*/
 }
 </script>
 
