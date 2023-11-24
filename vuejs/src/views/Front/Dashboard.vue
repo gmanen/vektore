@@ -1,7 +1,7 @@
 <template>
   <div>
     <VCard
-      class="mb-6"
+      class="mb-3"
       title="Comment puis-je vous aider aujourd'hui ?"
     >
       <VCardText>
@@ -23,9 +23,10 @@
                   dot-color="info"
               >
                 <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
-                <span class="app-timeline-title">
-                  John Doe
-                </span>
+                  <span class="app-timeline-title">
+                    John Doe
+                  </span>
+
                   <span class="app-timeline-meta">20/09/2023</span>
                 </div>
 
@@ -41,16 +42,25 @@
                   dot-color="success"
               >
                 <div class="d-flex justify-space-between align-center gap-2 flex-wrap">
-                <span class="app-timeline-title">
-                  FiduSens
-                </span>
+                  <span class="app-timeline-title">
+                    FiduSens
+                  </span>
+
                   <span class="app-timeline-meta">20/09/2023</span>
                 </div>
 
                 <p></p>
 
-                <div class="d-flex align-center">
-                  {{ item.answer }}
+                <div>
+                  <div style="width: 100px">
+                    <VProgressLinear
+                        indeterminate
+                        rounded
+                        color="primary"
+                        v-if="item.searching"
+                    />
+                  </div>
+                  <span v-if="!item.searching">{{ item.answer }}</span>
                 </div>
               </VTimelineItem>
             </VTimeline>
@@ -58,7 +68,7 @@
         </VCol>
       </VCardText>
 
-      <VForm @submit.prevent="() => {}">
+      <VForm @submit.prevent="postQuestion">
         <VCardText>
           <VCol cols="12">
             <VTextarea
@@ -67,6 +77,7 @@
                 label="FiduSens"
                 rows="1"
                 auto-grow
+                @keydown.enter="handleEnter"
             />
           </VCol>
 
@@ -96,6 +107,19 @@ const loadings = ref([])
 const qaItems = ref([])
 const content = ref('')
 const partialAnswer = ref('')
+const searching = ref(false)
+
+const handleEnter = (event) => {
+  if (event.shiftKey) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (content.value.trim()) {
+    postQuestion();
+  }
+}
 
 const postQuestion = async () => {
   loadings.value[0] = true
@@ -104,60 +128,25 @@ const postQuestion = async () => {
     content: content.value,
   }
 
-  axios
-      .post(config.apiUrl + '/question', data, {
-      })
-      .then(response => {
-        console.log(response)
+  qaItems.value.push({ question: content.value, answer: partialAnswer.value, searching: true })
 
-        /*
-        if (response.status === 200) {
-          qaItems.value.push({ question : content.value, answer : response.data.answer })
-        }
+  content.value = ''
 
-        content.value = ''
-         */
-
-        loadings.value[0] = false
-      })
-      .catch(error => {
-        console.log(error)
-
-        loadings.value[0] = false
-      })
-  /*
   axios.post(config.apiUrl + '/question', data, {
     onDownloadProgress: (progressEvent) => {
-      const text = progressEvent.currentTarget.responseText;
+      qaItems.value[qaItems.value.length - 1].searching = false
+      qaItems.value[qaItems.value.length - 1].answer = progressEvent.event.currentTarget.response
+    }})
+    .then(() => {
+      partialAnswer.value = ''
 
-      console.log(text)
+      loadings.value[0] = false
 
-      const lastChunk = text.slice(text.lastIndexOf('{'));
-
-      console.log(lastChunk)
-
-      try {
-        const data = JSON.parse(lastChunk);
-
-        this.partialAnswer = data.content;
-
-        if (data.finished) {
-          qaItems.value.push({ question: content.value, answer: this.partialAnswer });
-
-          content.value = '';
-
-          loadings.value[0] = false;
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-  })
-  .catch(error => {
-    console.log(error);
-    loadings.value[0] = false;
-  });
-*/
+      qaItems.value[qaItems.value.length - 1].searching = false
+    })
+    .catch(error => {
+      loadings.value[0] = false
+    })
 }
 </script>
 

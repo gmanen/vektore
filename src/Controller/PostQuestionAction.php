@@ -59,9 +59,12 @@ class PostQuestionAction
             /** @var CreateStreamedResponse $response */
             foreach ($stream as $response) {
                 echo $response->choices[0]->delta->content ?? '';
+                ob_flush();
                 flush();
             }
         });
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
 
         $response->send();
 
