@@ -37,7 +37,7 @@ class RedisStore
             ]),
         ];
 
-        $this->client->jsonmset(...$indexed);
+        $this->client->jsonset(...$indexed);
     }
 
     /**
