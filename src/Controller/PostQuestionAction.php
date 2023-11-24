@@ -8,10 +8,12 @@ use App\OpenAI\Chat;
 use App\OpenAI\Embedding;
 use App\VectoreStore\RedisStore;
 use OpenAI\Client;
+use OpenAI\Responses\Chat\CreateStreamedResponse;
 use Predis\Response\ServerException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -51,8 +53,14 @@ class PostQuestionAction
             return new JsonResponse(['answer' => "Je n'ai pas trouvé l'information dans ma base de connaissance. Essayez de reformuler votre question."]);
         }
 
-        $answer = $this->chat->sendQuestion($question->content, $documents);
+        $stream = $this->chat->sendQuestion($question->content, $documents, true);
 
-        return new JsonResponse(['answer' => $answer]);
+        return new StreamedResponse(function () use ($stream) {
+            /** @var CreateStreamedResponse $response */
+            foreach ($stream as $response) {
+                echo $response->choices[0]->message->content ?? '';
+                flush();
+            }
+        });
     }
 }

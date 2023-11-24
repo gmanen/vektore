@@ -3,6 +3,7 @@
 namespace App\OpenAI;
 
 use OpenAI\Client;
+use OpenAI\Responses\StreamResponse;
 
 class Chat
 {
@@ -12,7 +13,7 @@ class Chat
     ) {
     }
 
-    public function sendQuestion(string $input, array $embeddings): string
+    public function sendQuestion(string $input, array $embeddings, bool $streamed = false): string|StreamResponse
     {
         $context = '';
 
@@ -25,7 +26,7 @@ Contenu : {$document['content']}
 CTX;
         }
 
-        $response = $this->client->chat()->create([
+        $params = [
             'model' => $this->modelName,
             'messages' => [
                 [
@@ -42,7 +43,13 @@ MSG
                     'content' => $input,
                 ]
             ],
-        ]);
+        ];
+
+        if ($streamed) {
+            return $this->client->chat()->createStreamed($params);
+        }
+
+        $response = $this->client->chat()->create($params);
 
         return $response->choices[0]->message->content ?? '';
     }
