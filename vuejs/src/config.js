@@ -1,4 +1,4 @@
 export default {
   title: 'FiduSens',
-  apiUrl: 'http://localhost:45161/api',
+  apiUrl: 'http://localhost:43505/api',
 }

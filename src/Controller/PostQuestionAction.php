@@ -50,7 +50,11 @@ class PostQuestionAction
         $documents = $this->redisStore->similaritySearch($questionEmbedding);
 
         if ($documents === []) {
-            return new JsonResponse(['answer' => "Je n'ai pas trouvé l'information dans ma base de connaissance. Essayez de reformuler votre question."]);
+            return new StreamedResponse(function () {
+                echo 'Je n\'ai pas trouvé l\'information dans ma base de connaissance. Essayez de reformuler votre question.';
+                ob_flush();
+                flush();
+            });
         }
 
         $stream = $this->chat->sendQuestion($question->content, $documents, true);
