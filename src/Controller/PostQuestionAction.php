@@ -68,7 +68,19 @@ class PostQuestionAction
             }
         });
 
+        $exposedDocuments = [];
+
+        foreach ($documents as $document) {
+            if (array_key_exists($document['id'], $exposedDocuments)) {
+                continue;
+            }
+            
+            $exposedDocuments[$document['id']] = $document['title'];
+        }
+
         $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Header', 'X-Documents');
+        $response->headers->set('X-Documents', json_encode($exposedDocuments));
 
         $response->send();
 

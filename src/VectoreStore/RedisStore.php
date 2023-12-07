@@ -29,6 +29,7 @@ class RedisStore
             $this->redisIndex.':'.$document->getId()->toRfc4122().':'.$chunkIndex,
             '$',
             json_encode([
+                'id' => $document->getId()->toRfc4122(),
                 'content' => $chunk,
                 'title' => $document->getTitle(),
                 'type' => $document->getType(),
@@ -79,7 +80,6 @@ class RedisStore
             [$distanceLabel, $distanceValue, $redisPath, $jsonEncodedDocument] = $rawResults[$i + 1];
             /** @var array{content: string, document: string, title: string, type: string, chunkNumber: int, embedding: float[]} $data */
             $data = json_decode($jsonEncodedDocument, true, 512, JSON_THROW_ON_ERROR);
-            $data['document_chunk'] = $redisPath;
             $documents[] = $data;
         }
 
