@@ -9,7 +9,7 @@
           <div
               v-for="item in qaItems"
               :key="item.qaItem"
-              class="mb-5"
+              class="mb-10"
           >
             <VTimeline
                 side="end"
@@ -60,10 +60,35 @@
                         v-if="item.searching"
                     />
                   </div>
-                  <span v-if="!item.searching">{{ item.answer }}</span>
+                  <span v-if="!item.searching" class="response">{{ item.answer }}</span>
                 </div>
               </VTimelineItem>
             </VTimeline>
+
+            <div v-if="item.documents">
+              <div class="demo-space-x mt-1">
+                <div class="mb-3">
+                  <strong>Source :</strong>
+                </div>
+              </div>
+
+              <div class="demo-space-x">
+                <VChip
+                    class="clickable"
+                    color="primary"
+                    v-for="(document, index) in item.documents"
+                    @click="downloadFile(document.id, document.name)"
+                >
+                  <VIcon
+                      start
+                      size="18"
+                      icon="mdi-file-document-outline"
+                      link
+                  />
+                  {{ document.name }}
+                </VChip>
+              </div>
+            </div>
           </div>
         </VCol>
       </VCardText>
@@ -137,7 +162,20 @@ const postQuestion = async () => {
       qaItems.value[qaItems.value.length - 1].searching = false
       qaItems.value[qaItems.value.length - 1].answer = progressEvent.event.currentTarget.response
     }})
-    .then(() => {
+    .then(response => {
+      const documents = response.headers['x-documents']
+
+      if (documents) {
+        qaItems.value[qaItems.value.length - 1].documents = []
+
+        for (const [key, value] of Object.entries(JSON.parse(documents))) {
+          qaItems.value[qaItems.value.length - 1].documents.push({
+            id: key,
+            name: value
+          })
+        }
+      }
+
       partialAnswer.value = ''
 
       loadings.value[0] = false
@@ -146,6 +184,24 @@ const postQuestion = async () => {
     })
     .catch(error => {
       loadings.value[0] = false
+    })
+}
+
+const downloadFile = async (documentId, documentName) => {
+  axios
+    .get(config.apiUrl + '/documents/' + documentId, {
+      responseType: 'blob',
+    })
+    .then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', documentName)
+      document.body.appendChild(link)
+      link.click()
+    })
+    .catch(error => {
+      console.log(error)
     })
 }
 </script>
@@ -164,5 +220,13 @@ const postQuestion = async () => {
   to {
     transform: rotate(360deg);
   }
+}
+
+.response {
+  white-space: pre-line;
+}
+
+.clickable {
+  cursor: pointer;
 }
 </style>

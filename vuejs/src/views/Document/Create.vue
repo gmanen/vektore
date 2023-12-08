@@ -19,15 +19,24 @@
 
       <br>
 
-      <h4>Source en provenance d'un document</h4>
+      <h4 class="mb-3">Source en provenance d'un document</h4>
       <VCol cols="12">
         <VFileInput
-            v-model="file"
+            v-model="fileRaw"
             show-size
-            label="Fichier"
+            label="Fichier brute"
         />
       </VCol>
 
+      <VCol cols="12">
+        <VFileInput
+            v-model="fileTxt"
+            show-size
+            label="Fichier texte"
+        />
+      </VCol>
+
+      <!--
       <br>
 
       <h4>Source en provenance d'un lien</h4>
@@ -49,6 +58,7 @@
             placeholder="Sélecteur CSS"
         />
       </VCol>
+      -->
 
       <br>
 
@@ -65,8 +75,8 @@ import config from "@/config";
 
 const router = useRouter()
 const title = ref('')
-const file = ref('')
-const content = ref('')
+const fileTxt = ref('')
+const fileRaw = ref('')
 const url = ref('')
 const cssSelector = ref('')
 
@@ -75,10 +85,12 @@ const postDocument = async () => {
     title: title.value,
   }
 
-  if (file.value && file.value[0] && file.value[0] instanceof File) {
-    data.filename = file.value[0].name
-    data.content = await toBase64(file.value[0])
-    data.content = data.content.split(',')[1]
+  if (fileTxt.value && fileTxt.value[0] && fileTxt.value[0] instanceof File) {
+    data.filename = fileRaw.value[0].name
+    data.contentTxt = await toBase64(fileTxt.value[0])
+    data.contentTxt = data.contentTxt.split(',')[1]
+    data.contentRaw = await toBase64(fileRaw.value[0])
+    data.contentRaw = data.contentRaw.split(',')[1]
     data.type = 'file'
   } else {
     data.url = url.value
@@ -105,5 +117,4 @@ const toBase64 = (file) => new Promise((resolve, reject) => {
   reader.onload = () => resolve(reader.result);
   reader.onerror = error => reject(error);
 });
-
 </script>

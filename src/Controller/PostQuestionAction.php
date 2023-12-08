@@ -80,6 +80,7 @@ class PostQuestionAction
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Header', 'X-Documents');
+        $response->headers->set('Access-Control-Expose-Headers', 'X-Documents');
         $response->headers->set('X-Documents', json_encode($exposedDocuments));
 
         $response->send();

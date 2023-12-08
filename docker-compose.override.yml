@@ -2,8 +2,11 @@ version: '3'
 
 services:
   redis:
+    image: redisfab/redisearch:2.8-arm64v8-bionic
+    volumes:
+      - ./.docker/redis/data:/data:rw
     ports:
-      - "${REDIS_PORT:-}:6379"
+      - "6382:6379"
 
 ###> doctrine/doctrine-bundle ###
   database:
