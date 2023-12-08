@@ -17,7 +17,9 @@ class PostDocument
     #[Assert\NotBlank(groups: ['file'])]
     public ?string $filename;
     #[Assert\NotBlank(groups: ['file'])]
-    public ?string $content;
+    public ?string $contentTxt;
+    #[Assert\NotBlank(groups: ['file'])]
+    public ?string $contentRaw;
 
     #[Assert\NotBlank(groups: ['url'])]
     #[Assert\Url(groups: ['url'])]

@@ -20,10 +20,10 @@ class GetDocumentAction
     {
         $document = $this->documentRepository->find($id);
 
-        $response = new BinaryFileResponse($document->getPath());
+        $response = new BinaryFileResponse($document->getRawPath());
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            basename($document->getPath())
+            basename($document->getRawPath())
         );
 
         return $response;

@@ -22,7 +22,10 @@ class Document
     private string $type = 'file';
 
     #[ORM\Column(type: 'string')]
-    private string $path;
+    private string $txtPath;
+
+    #[ORM\Column(type: 'string')]
+    private string $rawPath;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $selector;
@@ -52,14 +55,24 @@ class Document
         $this->type = $type;
     }
 
-    public function getPath(): string
+    public function getTxtPath(): string
     {
-        return $this->path;
+        return $this->txtPath;
     }
 
-    public function setPath(string $path): void
+    public function setTxtPath(string $txtPath): void
     {
-        $this->path = $path;
+        $this->txtPath = $txtPath;
+    }
+
+    public function getRawPath(): string
+    {
+        return $this->rawPath;
+    }
+
+    public function setRawPath(string $rawPath): void
+    {
+        $this->rawPath = $rawPath;
     }
 
     public function getSelector(): ?string

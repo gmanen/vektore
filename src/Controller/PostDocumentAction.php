@@ -46,11 +46,10 @@ class PostDocumentAction
         $document->setType($postDocument->type);
 
         if ('file' === $postDocument->type) {
-            file_put_contents($path = $this->projectDir.'/var/data/'.$postDocument->filename, base64_decode($postDocument->content));
-            $document->setPath($path);
-        } elseif ('url' === $postDocument->type) {
-            $document->setPath($postDocument->url);
-            $document->setSelector($postDocument->cssSelector);
+            file_put_contents($txtPath = $this->projectDir.'/var/data/'.$postDocument->filename, base64_decode($postDocument->contentTxt));
+            file_put_contents($rawPath = $this->projectDir.'/var/raw/'.$postDocument->filename, base64_decode($postDocument->contentRaw));
+            $document->setTxtPath($txtPath);
+            $document->setRawPath($rawPath);
         }
 
         $this->repository->persistAndFlush($document);

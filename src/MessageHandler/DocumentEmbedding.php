@@ -24,7 +24,7 @@ class DocumentEmbedding
     public function __invoke(DocumentCreated $message): void
     {
         $document = $this->repository->find($message->id);
-        $content = file_get_contents($document->getPath());
+        $content = file_get_contents($document->getTxtPath());
         $chunks = [];
         $currentChunk = '';
 
