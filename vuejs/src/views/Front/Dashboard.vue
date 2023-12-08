@@ -189,21 +189,24 @@ const postQuestion = async () => {
 
 const downloadFile = async (documentId, documentName) => {
   axios
-    .get(config.apiUrl + '/documents/' + documentId, {
-      responseType: 'blob',
-    })
-    .then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', documentName)
-      document.body.appendChild(link)
-      link.click()
-    })
-    .catch(error => {
-      console.log(error)
-    })
-}
+      .get(config.apiUrl + '/documents/' + documentId, {
+        responseType: 'blob',
+      })
+      .then(response => {
+        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', documentName + '.pdf');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+};
 </script>
 
 <style lang="scss" scoped>
